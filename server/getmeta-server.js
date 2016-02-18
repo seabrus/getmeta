@@ -3,7 +3,7 @@
 // ===========================================
 var validateUrl = function(url) {
     if (!url) { return false; }
-    if (!url.trim) { return false; }
+    if (typeof url !== 'string') { return false; }
 
     var urlTrimmed = url.trim();
     var urlRegex = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i;
@@ -39,7 +39,7 @@ Meteor.methods({
             try {
                 response = HTTP.get(url, {timeout: 3000});
 
-                if (response.content) {
+                if (response && response.content) {
                     var isTitle = response.content.match(titleReg);
                     if (isTitle) {
                         var isTitleText = isTitle[0].match(titleTextReg);
@@ -63,12 +63,11 @@ Meteor.methods({
                 return websiteInfo;
             }
             catch(e) {
-                console.log('GetMeta -- server method error: ' + e.message + '. URL = ' + url);
+                console.log('GetMeta - server Method error: ' + e.message + '.\nURL = ' + url);
                 throw new Meteor.Error('getMeta error', 'GetMeta error: Cannot extract meta data');
             } // end of "try-catch" block
 
         } else {
-            //console.log( 'GetMeta -- server method: ATTENTION - The user is NOT logged in or URL is broken' );
             console.log( 'GetMeta -- server method error: URL is broken' );
             throw new Meteor.Error('url-is-broken', 'GetMeta error: URL is broken');
         } // end of "if (this.userId..."
