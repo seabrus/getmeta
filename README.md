@@ -1,6 +1,6 @@
 #GetMeta
 
-This package gets `title` and `description` tags content for a website with a specified URL.
+This [Meteor](https://www.meteor.com/) package extracts `title` and `description` tags content from a website with a specified URL.
 
 ###Usage###
 
@@ -36,4 +36,4 @@ Here is an example:
 }
 ```
 
-This code will run on the event `blur` when it happens for the input with a website address. Then it gets the `url` value, validates it, shows an animated gif to indicate that loading is in progress, and calls `GetMeta()` function.
+This code will run on the event `blur` when it happens for the input with a website address. It gets the `url` value, validates it, shows an animated gif to indicate that loading is in progress, and calls the `GetMeta()` function.
