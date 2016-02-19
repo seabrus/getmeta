@@ -16,8 +16,8 @@ Tinytest.add('Msg - Mistaken URL - Test 2: URL is not String', function(test) {
 
 Tinytest.addAsync('Msg - Mistaken URL - Test 3: URL is incorrect', function(test, next) {
     var callback = function(error, result) {
-        test.equal(error.error, 'url-is-broken');
-        test.equal(error.reason, 'GetMeta error: URL is broken');
+        test.equal(error.error, 'url-is-incorrect');
+        test.equal(error.reason, 'GetMeta error: URL is incorrect');
         next();
     };
 
@@ -30,7 +30,7 @@ Tinytest.addAsync('Msg - Mistaken URL - Test 3: URL is incorrect', function(test
 // =============================================
 Tinytest.addAsync('Msg - Non-Existent URL - Test 1: Title and description should be undefined', function(test, next) {
     var callback = function(error, result) {
-        test.equal(error.error, 'getMeta error');
+        test.equal(error.error, 'getmeta-error');
         test.equal(error.reason, 'GetMeta error: Cannot extract meta data');
         test.equal(result, undefined);
         next();
@@ -68,8 +68,8 @@ Tinytest.add('Msg - Wrong callback - Test 1: Execution should be stopped on clie
 /*
 var getErrorCallback = function(test, next) {
     return function(error, result) {
-        test.equal(error.error, 'url-is-broken');
-        test.equal(error.reason, 'GetMeta error: URL is broken');
+        test.equal(error.error, 'url-is-incorrect');
+        test.equal(error.reason, 'GetMeta error: URL is incorrect');
         next();
     }
 };

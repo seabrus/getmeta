@@ -62,13 +62,13 @@ Meteor.methods({
                 return websiteInfo;
             }
             catch(e) {
-                console.log('GetMeta - server-side error: ' + e.message + '; URL = ' + url);
-                throw new Meteor.Error('getMeta error', 'GetMeta error: Cannot extract meta data');
+                console.log('GetMeta error: Cannot extract meta data - ' + e.message + '; URL = ' + url);
+                throw new Meteor.Error('getmeta-error', 'GetMeta error: Cannot extract meta data');
             } // end of "try-catch" block
 
         } else {
-            console.log( 'GetMeta - server-side error: URL is broken' );
-            throw new Meteor.Error('url-is-broken', 'GetMeta error: URL is broken');
+            console.log( 'GetMeta error: URL is incorrect' );
+            throw new Meteor.Error('url-is-incorrect', 'GetMeta error: URL is incorrect');
         } // end of "if (Match.test(url, ValidURL))..."
 
     },
