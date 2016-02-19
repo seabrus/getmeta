@@ -3,8 +3,69 @@
 
 
 // =============================================
-//   Auxiliary functions
+// 1: Mistaken URL
 // =============================================
+Tinytest.add('Msg - Mistaken URL - Test 1: URL is undefined', function(test) {
+    var result = GetMeta();
+    test.equal(result, 'The argument "url" is required');
+});
+Tinytest.add('Msg - Mistaken URL - Test 2: URL is not String', function(test) {
+    var result = GetMeta( {x: 12} );
+    test.equal(result, 'The argument "url" is not a String');
+});
+
+Tinytest.addAsync('Msg - Mistaken URL - Test 3: URL is incorrect', function(test, next) {
+    var callback = function(error, result) {
+        test.equal(error.error, 'url-is-broken');
+        test.equal(error.reason, 'GetMeta error: URL is broken');
+        next();
+    };
+
+    GetMeta('fghtd//www', callback);
+});
+
+
+// =============================================
+// 2: Non-Existent URL
+// =============================================
+Tinytest.addAsync('Msg - Non-Existent URL - Test 1: Title and description should be undefined', function(test, next) {
+    var callback = function(error, result) {
+        test.equal(error.error, 'getMeta error');
+        test.equal(error.reason, 'GetMeta error: Cannot extract meta data');
+        test.equal(result, undefined);
+        next();
+    };
+
+    GetMeta('http://seabruspython.anywhere.com', callback);
+});
+
+
+// =============================================
+// 3: Correct and existing URL
+// =============================================
+Tinytest.addAsync('Msg - Correct URL - Test 1: Correct title and description should be returned', function(test, next) {
+    var callback = function(error, result) {
+        test.equal(error, undefined);
+        test.equal(result.title, 'World’s Largest Professional Network | LinkedIn');
+        test.equal(result.description, '400 million+ members | Manage your professional identity. Build and engage with your professional network. Access knowledge, insights and opportunities.');
+        next();
+    };
+
+    GetMeta('http://linkedin.com', callback);
+});
+
+
+// =============================================
+// 4: Wrong callback
+// =============================================
+Tinytest.add('Msg - Wrong callback - Test 1: Execution should be stopped on client', function(test) {
+    var result = GetMeta('http://linkedin.com');
+    test.equal(result, 'The argument "callback" is not a function');
+});
+
+
+
+/*
 var getErrorCallback = function(test, next) {
     return function(error, result) {
         test.equal(error.error, 'url-is-broken');
@@ -12,35 +73,7 @@ var getErrorCallback = function(test, next) {
         next();
     }
 };
-var getNonExistentURLCallback = function(test, next) {
-    return function(error, result) {
-        test.equal(error.error, 'getMeta error');
-        test.equal(error.reason, 'GetMeta error: Cannot extract meta data');
-        test.equal(result, undefined);
-        next();
-    }
-};
-var getTitleCallback = function(test, next) {
-    return function(error, result) {
-        test.equal(error, undefined);
-        test.equal(result.title, 'World’s Largest Professional Network | LinkedIn');
-        next();
-    }
-};
-var getDescriptionCallback = function(test, next) {
-    return function(error, result) {
-        test.equal(error, undefined);
-        test.equal(result.description, '400 million+ members | Manage your professional identity. Build and engage with your professional network. Access knowledge, insights and opportunities.');
-        next();
-    }
-};
 
-
-// =============================================
-//   Tests
-// =============================================
-
-// 1: Mistaken URL
 Tinytest.addAsync('Msg - Mistaken URL - Test 1: URL is undefined', function(test, next) {
     GetMeta(undefined, getErrorCallback(test, next));
 });
@@ -49,24 +82,5 @@ Tinytest.addAsync('Msg - Mistaken URL - Test 2: URL is not String', function(tes
 });
 Tinytest.addAsync('Msg - Mistaken URL - Test 3: URL is incorrect', function(test, next) {
     GetMeta('fghtd', getErrorCallback(test, next));
-});
-
-// 2: Non-Existent URL
-Tinytest.addAsync('Msg - Non-Existent URL - Test 1: Title and description should be empty', function(test, next) {
-    GetMeta('http://seabruspython.anywhere.com', getNonExistentURLCallback(test, next));
-});
-
-// 3: Correct URL
-Tinytest.addAsync('Msg - Correct URL - Test 1: Correct title tag is returned', function(test, next) {
-    GetMeta('http://linkedin.com', getTitleCallback(test, next));
-});
-Tinytest.addAsync('Msg - Correct URL - Test 2: Correct meta description is returned', function(test, next) {
-    GetMeta('http://linkedin.com', getDescriptionCallback(test, next));
-});
-
-
-/*
-Tinytest.add('Test 1', function(test) {
-    ...
 });
 */

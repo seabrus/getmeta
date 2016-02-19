@@ -2,7 +2,7 @@
 
 This [Meteor](https://www.meteor.com/) package extracts `title` and `description` tags content from a website with a specified URL.
 
-###Usage###
+###Usage
 
 Just call `GetMeta(url, callback)` on the client. 
 
@@ -37,3 +37,9 @@ Here is an example:
 ```
 
 This code will run on the event `blur` when it happens for the input with a website address. It gets the `url` value, validates it, shows an animated gif to indicate that loading is in progress, and calls the `GetMeta()` function.
+
+###Note 1
+Please note that `timeout` for the request to the website specified by `url` is now set equal to 3000 ms. If no response is got during this time, an error will be thrown and the `result` will `underfind`.
+
+###Note 2
+The package prevents attempts to flood the application with traffic and limits the number of calls to 5 per second. 
