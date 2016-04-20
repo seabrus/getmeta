@@ -1,27 +1,32 @@
-#GetMeta
+# GetMeta
 
 GetMeta is a [Meteor](https://www.meteor.com/) package that extracts `title` and `description` tags content from a website with a specified URL.
 
-###How to Install
+### How to Install
 To add this package to your app use the command:
 ```
 meteor add seabrus:getmeta
 ```
 
-###Usage
+### Usage
 
-Just call `GetMeta(url, callback)` on the client. 
+Just call
+```javascript
+GetMeta(url, callback);
+```
+on the client.
 
-The argument `url` should be a valid URL. 
-The `callback` function has two arguments -- `error` and `result`: 
-- `error` is an instance of the standard `Meteor.Error` object; 
-- `result` is an object with two keys: `title` and `description`.
+The argument `url` should be a string that represents a valid URL.
+The `callback` function has two arguments: `error` and `result`, and
+- `error` is an instance of the standard `Meteor.Error` object;
+- `result` is an object with two keys: `title` and `description`: `{title: ... , description: ...}`.
 
+### Example
 Here is an example:
 ```javascript
 'blur #url': function(event, instance) {
   var url = event.target.value.trim();
-  var isUrlValid = validateUrl(url); // make some actions to validate URL 
+  var isUrlValid = validateUrl(url); // make some actions to validate URL
 
   if (isUrlValid === VALID_URL) {
     instance.$('#loading-gif').show();
@@ -45,10 +50,13 @@ Here is an example:
 
 This code will run on the event `blur` when it happens for the input with a website address. It gets the `url` value, validates it, shows an animated gif to indicate that loading is in progress, and calls the `GetMeta()` function.
 
-The function `validateUrl(url)` is given just for an example, it is not part of the package.
+Please note that the function `validateUrl(url)` as well as the elements with `#loading-gif`, `#title`, `#description` are given just for an example, they are not parts of the package.
 
-###Note 1
-Please note that `timeout` for the request to the website specified by `url` is now set to 3000 ms. If no response is got during this time, an error will be thrown and the `result` will be `underfind`.
+### Timeout
+`timeout` for the request to the website specified by `url` is now set to 3000 ms. If no response is got during this time, an error will be thrown and the `result` will be `underfind`.
 
-###Note 2
-The package prevents attempts to flood it with traffic and limits the number of calls to 5 per second. 
+### DDoS Attacks Prevention
+The package prevents attempts to flood it with traffic and limits the number of calls to 5 per second.
+
+### License
+MIT
